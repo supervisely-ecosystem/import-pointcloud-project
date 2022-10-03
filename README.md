@@ -1,7 +1,7 @@
 <div align="center" markdown>
 <img src="https://github.com/supervisely-ecosystem/import-pointcloud-project/releases/download/v0.0.0/import_ptc_poster.png">
 
-# Import Pointcloud Episodes
+# Import Pointcloud Project
 
 <p align="center">
   <a href="#Overview">Overview</a> •
@@ -24,6 +24,7 @@ Import project in Supervisely pointcloud format from folder or archive.
 
 Backward compatible with [`Export pointclouds project in Supervisely format`](https://ecosystem.supervise.ly/apps/export-pointclouds-project-in-supervisely-format) app
 
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/export-pointclouds-project-in-supervisely-format" src="" width="450px" style='padding-bottom: 20px'/>
 
 # Preparation
 
