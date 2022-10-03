@@ -1,0 +1,31 @@
+{
+    "name": "Import Pointcloud Project",
+    "type": "app",
+    "categories": [
+      "import",
+      "pointclouds",
+      "essentials"
+    ],
+    "modal_template_state": {
+      "remove_source": true,
+      "project_name": ""
+    },
+    "description": "Import Pointcloud Project with Annotations and Photo context",
+    "docker_image": "supervisely/base-py-sdk:6.65.0",
+    "task_location": "workspace_tasks",
+    "modal_template": "src/modal.html",
+    "main_script": "src/main.py",
+    "icon": "",
+    "icon_background": "#FFFFFF",
+    "icon_cover": true,
+    "headless": true,
+    "isolate": true,
+    "instance_version": "6.4.58",
+    "context_menu": {
+      "target": [
+        "files_folder",
+        "files_file"
+      ]
+    },
+    "poster": ""
+  }
