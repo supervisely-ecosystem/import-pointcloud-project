@@ -1,5 +1,5 @@
 <div align="center" markdown>
-<img src="">
+<img src="https://github.com/supervisely-ecosystem/import-pointcloud-project/releases/download/v0.0.0/import_ptc_poster.png">
 
 # Import Pointcloud Episodes
 

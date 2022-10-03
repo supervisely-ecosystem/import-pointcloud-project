@@ -15,7 +15,7 @@
     "task_location": "workspace_tasks",
     "modal_template": "src/modal.html",
     "main_script": "src/main.py",
-    "icon": "",
+    "icon": "https://github.com/supervisely-ecosystem/import-pointcloud-project/releases/download/v0.0.0/import_ptc_icon.png",
     "icon_background": "#FFFFFF",
     "icon_cover": true,
     "headless": true,
@@ -27,5 +27,5 @@
         "files_file"
       ]
     },
-    "poster": ""
+    "poster": "https://github.com/supervisely-ecosystem/import-pointcloud-project/releases/download/v0.0.0/import_ptc_poster.png"
   }
