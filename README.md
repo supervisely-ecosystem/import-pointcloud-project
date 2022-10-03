@@ -24,7 +24,7 @@ Import project in Supervisely pointcloud format from folder or archive.
 
 Backward compatible with [`Export pointclouds project in Supervisely format`](https://ecosystem.supervise.ly/apps/export-pointclouds-project-in-supervisely-format) app
 
-<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/export-pointclouds-project-in-supervisely-format" src="" width="450px" style='padding-bottom: 20px'/>
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/export-pointclouds-project-in-supervisely-format" src="https://user-images.githubusercontent.com/97401023/193619296-df4ea2b2-e26c-42c2-b98a-bbe578c67fdb.png" width="450px" style='padding-bottom: 20px'/>
 
 # Preparation
 
@@ -81,7 +81,7 @@ pointcloud_project folder or .tar/.zip archive
 
 1. Run app [Import Supervisely pointcloud episodes](https://ecosystem.supervise.ly/apps/import-pointcloud-episode) from ecosystem or from the context menu of directory or archive in **Team Files** -> `Run app` -> `Import pointcloud episodes in supervisely format`
 
-<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/import-pointcloud-project" src="" width="450px" style='padding-bottom: 20px'/>  
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/import-pointcloud-project" src="" width="450px" style='padding-bottom: 10px'/>  
 
 2. Wait for the app to import your data (project will be created in the current workspace)
 
@@ -93,8 +93,8 @@ You can export these projects from ecosystem with [`Export pointclouds project i
 
 - [Demo pointcloud project](https://ecosystem.supervise.ly/projects/demo-pointcloud-project)
 
-<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/demo-pointcloud-project" src="" height="70px" margin-bottom="20px"/>  
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/demo-pointcloud-project" src="https://user-images.githubusercontent.com/97401023/193617265-431aa000-ae57-4beb-aa9b-8ba31d755b74.png" width="450px" margin-bottom="10px"/>  
 
 - [Demo pointcloud project with labels](https://ecosystem.supervise.ly/projects/demo-pointcloud-project-annotated)
 
-<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/demo-pointcloud-project-annotated" src="" height="70px" margin-bottom="20px" />
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/demo-pointcloud-project-annotated" src="https://user-images.githubusercontent.com/97401023/193617359-2b929837-901e-4d98-92b8-cecb32d8f3af.png" width="450px" margin-bottom="10px" />
