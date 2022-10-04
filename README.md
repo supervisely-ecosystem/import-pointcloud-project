@@ -95,4 +95,4 @@ You can export these projects from ecosystem with [`Export pointclouds project i
 
 - [Demo pointcloud project with labels](https://ecosystem.supervise.ly/projects/demo-pointcloud-project-annotated)
 
-<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/demo-pointcloud-project-annotated" src="https://user-images.githubusercontent.com/97401023/193617359-2b929837-901e-4d98-92b8-cecb32d8f3af.png" width="350px" margin-bottom="10px" />
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/demo-pointcloud-project-annotated" src="https://user-images.githubusercontent.com/97401023/193617359-2b929837-901e-4d98-92b8-cecb32d8f3af.png" width="300px" margin-bottom="10px" />
