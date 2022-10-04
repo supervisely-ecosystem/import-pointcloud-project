@@ -81,7 +81,7 @@ pointcloud_project folder or .tar/.zip archive
 
 1. Run app [Import Pointcloud Project](https://ecosystem.supervise.ly/apps/import-pointcloud-project) from ecosystem or from the context menu of directory or archive in **Team Files** -> `Run app` -> `Import pointcloud project`
 
-<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/import-pointcloud-project" src="https://user-images.githubusercontent.com/97401023/193620195-6481801e-0fc5-4ac3-858f-cb3a294defac.png" width="450px" style='padding-bottom: 10px'/>  
+<img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/import-pointcloud-project" src="https://user-images.githubusercontent.com/97401023/193620195-6481801e-0fc5-4ac3-858f-cb3a294defac.png" width="350px" style='padding-bottom: 10px'/>  
 
 2. Wait for the app to import your data (project will be created in the current workspace)
 
