@@ -14,10 +14,9 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
     project_id, project_name = upload_pointcloud_project(input_dir, api, g.WORKSPACE_ID, project_name, log_progress=True)
     api.task.set_output_project(task_id, project_id, project_name)
     
-    if g.REMOVE_SOURCE:
+    if g.REMOVE_SOURCE and not g.IS_ON_AGENT:
         api.file.remove(team_id=g.TEAM_ID, path=g.INPUT_DIR)
         source_dir_name = g.INPUT_DIR.strip("/")
-
         sly.logger.info(
             msg=f"Source directory: '{source_dir_name}' was successfully removed."
         )
