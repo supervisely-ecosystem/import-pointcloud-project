@@ -26,6 +26,13 @@ Backward compatible with [`Export pointclouds project in Supervisely format`](ht
 
 <img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/export-pointclouds-project-in-supervisely-format" src="https://user-images.githubusercontent.com/97401023/193619296-df4ea2b2-e26c-42c2-b98a-bbe578c67fdb.png" width="450px" style='padding-bottom: 20px'/>
 
+🏋️ Starting from version v1.1.0 application supports import from special directory on your local computer. It is made for Enterprise Edition customers who need to upload tens or even hundreds of gigabytes of data without using drag-ang-drop mechanism:
+
+1. Run agent on your computer where data is stored.
+2. Copy your data to special folder on your computer that was created by agent. Agent mounts this directory to your Supervisely instance and it becomes accessible in Team Files. Learn more in documentation.
+3. Go to Team Files -> Supervisely Agent and find your folder there.
+4. Right click to open context menu and start app. Now app will upload data directly from your computer to the platform.
+
 # Preparation
 
 Upload your data in Supervisely pointcloud episodes format to Team Files. It is possible to upload folder or archive (`.tar`, `.tar.gz` or `.zip`).
