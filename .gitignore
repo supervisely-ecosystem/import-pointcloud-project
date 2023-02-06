@@ -1,1 +1,7 @@
 secret_debug.env
+.idea
+.venv
+venv
+src/debug
+__pycache__
+.vscode
