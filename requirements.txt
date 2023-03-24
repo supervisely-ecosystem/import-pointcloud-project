@@ -1,1 +1,1 @@
-git+https://github.com/supervisely/supervisely.git@fix_import_pointclouds_pcd
+supervisely==6.70.11
