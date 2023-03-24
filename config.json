@@ -2,13 +2,13 @@
     "name": "Import Pointcloud Project",
     "type": "app",
     "categories": [
-        "import",
-        "pointclouds",
-        "essentials"
+      "import",
+      "pointclouds",
+      "essentials"
     ],
     "modal_template_state": {
-    "remove_source": true,
-    "project_name": ""
+      "remove_source": true,
+      "project_name": ""
     },
     "description": "Import Pointcloud Project with Annotations and Photo context in Supervisely format",
     "docker_image": "supervisely/base-py-sdk:6.70.11",
@@ -23,13 +23,13 @@
     "min_agent_version": "6.7.4",
     "min_instance_version": "6.5.46",
     "context_menu": {
-    "context_category": "Import",
+      "context_category": "Import",
         "target": [
         "files_folder",
         "files_file",
         "agent_folder",
         "agent_file"
         ]
-    },
+      },
     "poster": "https://github.com/supervisely-ecosystem/import-pointcloud-project/releases/download/v0.0.0/import_ptc_poster.png"
-}
+  }
