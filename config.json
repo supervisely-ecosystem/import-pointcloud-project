@@ -11,7 +11,7 @@
       "project_name": ""
     },
     "description": "Import Pointcloud Project with Annotations and Photo context in Supervisely format",
-    "docker_image": "supervisely/base-py-sdk:6.68.54",
+    "docker_image": "supervisely/base-py-sdk:6.70.11",
     "task_location": "workspace_tasks",
     "modal_template": "src/modal.html",
     "main_script": "src/main.py",
