@@ -86,7 +86,7 @@ The imported project structure has to be the following:
 
 # How To Use
 
-1. Run app [Import Point Cloud [Project](https://ecosystem.supervise.ly/apps/import-pointcloud-project) from the ecosystem or the context menu of the directory or archive in **Team Files** -> `Run app` -> `Import Point Cloud project`
+1. Run app [Import Point Cloud Project](https://ecosystem.supervise.ly/apps/import-pointcloud-project) from the ecosystem or the context menu of the directory or archive in **Team Files** -> `Run app` -> `Import Point Cloud project`
 
 <img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/import-pointcloud-project" src="https://user-images.githubusercontent.com/97401023/193620195-6481801e-0fc5-4ac3-858f-cb3a294defac.png" width="400px" style='padding-bottom: 10px'/>
 
