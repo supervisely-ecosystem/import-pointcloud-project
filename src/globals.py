@@ -3,21 +3,22 @@ from pathlib import Path
 import supervisely as sly
 
 from distutils.util import strtobool
+from dotenv import load_dotenv
 
 app_root_directory = str(Path(__file__).parent.absolute().parents[0])
 sly.logger.info(f"App root directory: {app_root_directory}")
 
-# debug
-# from dotenv import load_dotenv
-# load_dotenv(os.path.join(app_root_directory, "debug.env"))
-# load_dotenv(os.path.join(app_root_directory, "secret_debug.env"))
+if sly.is_development():
+    load_dotenv("debug.env")
+    load_dotenv(os.path.expanduser("~/supervisely.env"))
 
 api: sly.Api = sly.Api.from_env()
 my_app = sly.AppService()
 
-TASK_ID = int(os.environ["TASK_ID"])
-TEAM_ID = os.environ["context.teamId"]
-WORKSPACE_ID = os.environ["context.workspaceId"]
+TASK_ID = sly.env.task_id()
+TEAM_ID = sly.env.team_id()
+WORKSPACE_ID = sly.env.workspace_id()
+
 INPUT_DIR = os.environ.get("modal.state.slyFolder")
 INPUT_FILE = os.environ.get("modal.state.slyFile")
 

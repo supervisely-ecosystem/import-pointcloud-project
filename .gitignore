@@ -1,1 +1,3 @@
 secret_debug.env
+debug/
+**/__pycache__
