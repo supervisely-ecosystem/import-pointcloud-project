@@ -1,5 +1,5 @@
 <div align="center" markdown>
-<img src="https://github.com/supervisely-ecosystem/import-pointcloud-project/releases/download/v0.0.0/import_ptc_poster.png">
+<img src="https://github.com/supervisely-ecosystem/import-pointcloud-project/assets/115161827/cbabc182-762f-4b37-a1cf-73b3087d078c">
 
 # Import Point Cloud Project
 
