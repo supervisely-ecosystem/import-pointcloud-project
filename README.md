@@ -35,7 +35,8 @@ Backward compatible with [`Export Point Clouds project in Supervisely format`](h
 
 # Preparation
 
-Upload your data in Supervisely Point Cloud Episodes format to Team Files. It is possible to upload a folder or archive (`.tar`, `.tar.gz` or `.zip`).
+Upload your data in Supervisely Point Cloud Episodes format to Team Files. It is possible to upload a folder or archive (`.tar`, `.tar.gz` or `.zip`).<br>
+ℹ️ You can download the archive with data example [here](https://github.com/supervisely-ecosystem/import-pointcloud-project/files/12547913/my_pointcloud_project.zip).<br>
 
 The imported project structure has to be the following:
 
