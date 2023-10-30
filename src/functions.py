@@ -49,6 +49,6 @@ def download_input_files(api, task_id, input_dir, input_file):
             z_file = zipfile.ZipFile(archive_path)
             z_file.extractall(extract_dir)
         else:
-            raise NotImplementedError("File extension is not supported.")
+            raise Exception(f"Incorrect archive format '{archive_path}'. Please use .tar or .zip files.")
         sly.fs.silent_remove(archive_path)
     return extract_dir, project_name
