@@ -47,7 +47,8 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
                 except Exception as e:
                     app_logger.warn(f"Failed to upload data from {project_dir}. Error: {repr(e)}")
     elif len(pcd_dirs) > 0:
-        pcd_cnt, project_id = f.upload_only_pcds(api, task_id, g.PROJECT_NAME, pcd_dirs)
+        project_name = os.path.basename(os.path.commonpath(pcd_dirs))
+        pcd_cnt, project_id = f.upload_only_pcds(api, task_id, project_name, pcd_dirs)
         uploaded_pcd_cnt += pcd_cnt
         if pcd_cnt == 0:
             app_logger.warn(f"Failed to upload data from {pcd_dirs}. No pointclouds found.")
