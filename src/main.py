@@ -47,8 +47,8 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
                 except Exception as e:
                     app_logger.warn(f"Failed to upload data from {project_dir}. Error: {repr(e)}")
     elif len(pcd_dirs) > 0:
-        project_name = os.path.basename(os.path.commonpath(pcd_dirs))
-        pcd_cnt, project_id = f.upload_only_pcds(api, task_id, project_name, pcd_dirs)
+        app_logger.warn("Not found pointcloud projects in Supervisely format. Try to upload only pointclouds...")
+        pcd_cnt, project_id = f.upload_only_pcds(api, task_id, "Pointclouds project", pcd_dirs)
         uploaded_pcd_cnt += pcd_cnt
         if pcd_cnt == 0:
             app_logger.warn(f"Failed to upload data from {pcd_dirs}. No pointclouds found.")
@@ -58,7 +58,7 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
     if uploaded_project_cnt == 0 and uploaded_pcd_cnt == 0:
         msg = "Failed to upload data. Not found any pointclouds or projects in Supervisely format."
         description = "Please, check the input directory, task logs and try again."
-        app_logger.error(msg, exc_info=False)
+        app_logger.error(msg)
         api.task.set_output_error(task_id, msg, description)
 
     if g.REMOVE_SOURCE and not g.IS_ON_AGENT:
