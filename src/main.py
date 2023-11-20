@@ -35,9 +35,9 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
                     if project_id is not None:
                         api.project.remove(project_id)
                     app_logger.warn(
-                        f"Project {project_dir} was not uploaded. {repr(e)}. \nTry to upload only pointclouds...",
-                        exc_info=True,
+                        f"Project {project_dir} was not uploaded. Incorrect Supervisely format for pointcloud project.", exc_info=True
                     )
+                    app_logger.info("Try to upload only pointclouds...")
                     pcd_dirs = [d for d in sly.fs.dirs_filter(project_dir, f.search_pcd_dir)]
                     pcd_cnt, project_id = f.upload_only_pcds(api, task_id, project_name, pcd_dirs)
                     uploaded_pcd_cnt += pcd_cnt
