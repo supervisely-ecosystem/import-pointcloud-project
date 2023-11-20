@@ -35,7 +35,8 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
                     if project_id is not None:
                         api.project.remove(project_id)
                     app_logger.warn(
-                        f"Project {project_dir} was not uploaded. {repr(e)}. \nTry to upload only pointclouds..."
+                        f"Project {project_dir} was not uploaded. {repr(e)}. \nTry to upload only pointclouds...",
+                        stack_info=True,
                     )
                     pcd_dirs = [d for d in sly.fs.dirs_filter(project_dir, f.search_pcd_dir)]
                     pcd_cnt, project_id = f.upload_only_pcds(api, task_id, project_name, pcd_dirs)
@@ -47,7 +48,9 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
                 except Exception as e:
                     app_logger.warn(f"Failed to upload data from {project_dir}. Error: {repr(e)}")
     elif len(pcd_dirs) > 0:
-        app_logger.warn("Not found pointcloud projects in Supervisely format. Try to upload only pointclouds...")
+        app_logger.warn(
+            "Not found pointcloud projects in Supervisely format. Try to upload only pointclouds..."
+        )
         pcd_cnt, project_id = f.upload_only_pcds(api, task_id, "Pointclouds project", pcd_dirs)
         uploaded_pcd_cnt += pcd_cnt
         if pcd_cnt == 0:
