@@ -36,7 +36,7 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
                         api.project.remove(project_id)
                     app_logger.warn(
                         f"Project {project_dir} was not uploaded. {repr(e)}. \nTry to upload only pointclouds...",
-                        stack_info=True,
+                        exc_info=True,
                     )
                     pcd_dirs = [d for d in sly.fs.dirs_filter(project_dir, f.search_pcd_dir)]
                     pcd_cnt, project_id = f.upload_only_pcds(api, task_id, project_name, pcd_dirs)
