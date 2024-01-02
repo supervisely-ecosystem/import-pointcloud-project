@@ -35,7 +35,8 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
                     if project_id is not None:
                         api.project.remove(project_id)
                     app_logger.warn(
-                        f"Project {project_dir} was not uploaded. Incorrect Supervisely format for pointcloud project.", exc_info=True
+                        f"Project {project_dir} was not uploaded. Incorrect Supervisely format for pointcloud project.",
+                        exc_info=True,
                     )
                     app_logger.info("Try to upload only pointclouds...")
                     pcd_dirs = [d for d in sly.fs.dirs_filter(project_dir, f.search_pcd_dir)]
@@ -76,14 +77,19 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
     g.my_app.stop()
 
 
-sly.logger.info(
-    "Script arguments",
-    extra={
-        "context.teamId": g.TEAM_ID,
-        "context.workspaceId": g.WORKSPACE_ID,
-        "modal.state.slyFolder": g.INPUT_DIR,
-        "modal.state.slyFile": g.INPUT_FILE,
-    },
-)
+def main():
+    sly.logger.info(
+        "Script arguments",
+        extra={
+            "context.teamId": g.TEAM_ID,
+            "context.workspaceId": g.WORKSPACE_ID,
+            "modal.state.slyFolder": g.INPUT_DIR,
+            "modal.state.slyFile": g.INPUT_FILE,
+        },
+    )
 
-g.my_app.run(initial_events=[{"command": "import_pointcloud_project"}])
+    g.my_app.run(initial_events=[{"command": "import_pointcloud_project"}])
+
+
+if __name__ == "__main__":
+    sly.main_wrapper("main", main, log_for_agent=False)
