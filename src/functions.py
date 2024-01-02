@@ -112,9 +112,6 @@ def check_input_path(api, input_dir: str, input_file: str) -> str:
 
 
 def download_input_files(api, task_id, input_dir, input_file):
-    # ! debug only (test exception handler logs)
-    path = input_dir or input_file    
-    api.file.get_info_by_path(g.TEAM_ID, path).abc
     if input_dir:
         if g.IS_ON_AGENT:
             agent_id, cur_files_path = api.file.parse_agent_id_and_path(input_dir)
