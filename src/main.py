@@ -76,19 +76,14 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
     g.my_app.stop()
 
 
-def main():
-    sly.logger.info(
-        "Script arguments",
-        extra={
-            "context.teamId": g.TEAM_ID,
-            "context.workspaceId": g.WORKSPACE_ID,
-            "modal.state.slyFolder": g.INPUT_DIR,
-            "modal.state.slyFile": g.INPUT_FILE,
-        },
-    )
+sly.logger.info(
+    "Script arguments",
+    extra={
+        "context.teamId": g.TEAM_ID,
+        "context.workspaceId": g.WORKSPACE_ID,
+        "modal.state.slyFolder": g.INPUT_DIR,
+        "modal.state.slyFile": g.INPUT_FILE,
+    },
+)
 
-    g.my_app.run(initial_events=[{"command": "import_pointcloud_project"}])
-
-
-if __name__ == "__main__":
-    sly.main_wrapper("main", main)
+g.my_app.run(initial_events=[{"command": "import_pointcloud_project"}])
