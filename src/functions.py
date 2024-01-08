@@ -8,18 +8,7 @@ from typing import Callable
 import download_progress
 import globals as g
 import supervisely as sly
-from supervisely.annotation.label import LabelJsonFields
-from supervisely.annotation.obj_class import ObjClassJsonFields
-from supervisely.api.module_api import ApiField
-from supervisely.io.fs import get_file_ext, get_file_name_with_ext, silent_remove
-from supervisely.pointcloud_annotation.constants import (
-    FIGURES,
-    NAME,
-    OBJECT_ID,
-    OBJECT_KEY,
-    OBJECTS,
-    TAGS,
-)
+from supervisely.pointcloud_annotation.constants import NAME, TAGS
 
 
 def update_progress(count, api: sly.Api, task_id: int, progress: sly.Progress) -> None:
@@ -60,13 +49,13 @@ def search_projects(dir_path):
 def search_pcd_dir(dir_path):
     listdir = os.listdir(dir_path)
     is_pcd_dir = any(
-        get_file_ext(f) in sly.pointcloud.ALLOWED_POINTCLOUD_EXTENSIONS for f in listdir
+        sly.fs.get_file_ext(f) in sly.pointcloud.ALLOWED_POINTCLOUD_EXTENSIONS for f in listdir
     )
     return is_pcd_dir
 
 
 def is_archive_path(path):
-    return get_file_ext(path) in [".zip", ".tar"] or path.endswith(".tar.gz")
+    return sly.fs.get_file_ext(path) in [".zip", ".tar"] or path.endswith(".tar.gz")
 
 
 def check_input_path(api, input_dir: str, input_file: str) -> str:
@@ -84,7 +73,7 @@ def check_input_path(api, input_dir: str, input_file: str) -> str:
             input_dir, input_file = None, listdir[0]
 
     if input_file:
-        file_ext = get_file_ext(input_file)
+        file_ext = sly.fs.get_file_ext(input_file)
         if not is_archive_path(input_file):
             sly.logger.info("File mode is selected, but uploaded file is not archive.")
             if basename(normpath(input_file)) in ["meta.json", "key_id_map.json"]:
@@ -205,9 +194,7 @@ def upload_only_pcds(api: sly.Api, task_id, project_name, only_pcd_dirs):
             f"Uploading pointclouds from directory '{pcd_dir}' to dataset '{dataset.name}'",
             total_size,
         )
-        pcd_names = [
-            os.path.basename(path) for path in pcd_paths if sly.pointcloud.has_valid_ext(path)
-        ]
+        pcd_names = [basename(path) for path in pcd_paths if sly.pointcloud.has_valid_ext(path)]
         pointclouds = api.pointcloud.upload_paths(
             dataset.id, pcd_names, pcd_paths, progress_project_cb
         )
