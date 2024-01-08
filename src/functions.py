@@ -239,8 +239,8 @@ def check_project_structure(project_dir):
                 raise Exception(f"Annotation directory not found in {file.path}.")
             for ann in os.scandir(ann_dir):
                 if ann.is_file():
-                    ann_json = sly.json.load_json_file(ann.path)
                     try:
+                        ann_json = sly.json.load_json_file(ann.path)
                         sly.PointcloudAnnotation.from_json(ann_json, project_meta)
                     except Exception as e:
                         new_msg = f"Annotation {ann.path} is not valid. "
@@ -251,7 +251,8 @@ def check_project_structure(project_dir):
                                     new_msg += f"Tag name field not found in the one of the tags in uploaded annotation."
                                 elif tag[NAME] not in tag_names:
                                     new_msg += f"Tag '{tag[NAME]}' not found in given project meta."
-                        sly.logger.warn(new_msg + "Annotation will be skipped.")
+                        sly.logger.warn(new_msg + f"\nAnnotation will be skipped. \n{repr(e)}", exc_info=True)
+                        sly.fs.silent_remove(ann.path)
             if len(pcd_files) != len(os.listdir(ann_dir)):
                 for pcd in pcd_files:
                     if f"{pcd}.json" not in os.listdir(ann_dir):
