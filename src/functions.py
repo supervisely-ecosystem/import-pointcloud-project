@@ -55,6 +55,7 @@ def search_pcd_dir(dir_path):
 
 
 def is_archive_path(path):
+    """Checks if remote path is archive."""
     return sly.fs.get_file_ext(path) in [".zip", ".tar"] or path.endswith(".tar.gz")
 
 
@@ -140,20 +141,13 @@ def download_input_files(api, task_id, input_dir, input_file):
         )
         api.file.download(g.TEAM_ID, input_file, archive_path, None, progress_cb)
 
-        if is_archive_path(archive_path):
-            if tarfile.is_tarfile(archive_path):
-                with tarfile.open(archive_path) as archive:
-                    archive.extractall(extract_dir)
-            elif zipfile.is_zipfile(archive_path):
-                z_file = zipfile.ZipFile(archive_path)
-                z_file.extractall(extract_dir)
-            else:
-                raise Exception(f"Failed to extract archive '{archive_path}'.")
+        if sly.fs.is_archive(archive_path):
+            sly.fs.unpack_archive(archive_path, extract_dir)
+            sly.fs.silent_remove(archive_path)
         else:
             raise Exception(
                 f"Incorrect file format '{archive_path}'. Please use .tar or .zip files."
             )
-        sly.fs.silent_remove(archive_path)
     return extract_dir
 
 

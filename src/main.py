@@ -1,6 +1,7 @@
 import os
-import globals as g
+
 import functions as f
+import globals as g
 import supervisely as sly
 from supervisely.project.pointcloud_project import upload_pointcloud_project
 
@@ -21,6 +22,8 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
     if len(project_dirs) > 0:
         for project_dir in project_dirs:
             project_name = os.path.basename(os.path.normpath(project_dir))
+            if g.OUTPUT_PROJECT_NAME != "":
+                project_name = g.OUTPUT_PROJECT_NAME
             try:
                 f.check_project_structure(project_dir)
                 project_id, project_name = upload_pointcloud_project(
@@ -47,7 +50,10 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
         app_logger.warn(
             "Not found pointcloud projects in Supervisely format. Try to upload only pointclouds..."
         )
-        pcd_cnt, project_id = f.upload_only_pcds(api, task_id, "Pointclouds project", pcd_dirs)
+        project_name = (
+            "Pointclouds project" if g.OUTPUT_PROJECT_NAME == "" else g.OUTPUT_PROJECT_NAME
+        )
+        pcd_cnt, project_id = f.upload_only_pcds(api, task_id, project_name, pcd_dirs)
         uploaded_pcd_cnt += pcd_cnt
 
     if uploaded_project_cnt == 0 and uploaded_pcd_cnt == 0:

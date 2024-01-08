@@ -19,8 +19,8 @@ TASK_ID = sly.env.task_id()
 TEAM_ID = sly.env.team_id()
 WORKSPACE_ID = sly.env.workspace_id()
 
-INPUT_DIR = os.environ.get("modal.state.slyFolder")
-INPUT_FILE = os.environ.get("modal.state.slyFile")
+INPUT_DIR = sly.env.folder(raise_not_found=False)
+INPUT_FILE = sly.env.file(raise_not_found=False)
 
 OUTPUT_PROJECT_NAME = os.environ.get("modal.state.project_name", "")
 REMOVE_SOURCE = bool(strtobool(os.getenv("modal.state.remove_source")))
