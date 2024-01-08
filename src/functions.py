@@ -248,9 +248,9 @@ def check_project_structure(project_dir):
                         if "TagMeta is None" in str(e):
                             for tag in ann_json[TAGS]:
                                 if NAME not in tag:
-                                    new_msg = f"{ann.name}: Name field not found for one of the tags in uploaded annotation."
+                                    new_msg = f"{ann.name}: Name field not found for one of the tags in uploaded annotation. Skippping file..."
                                 elif tag[NAME] not in tag_names:
-                                    new_msg = f"{ann.name}: Tag '{tag[NAME]}' not found in given project meta."
+                                    new_msg = f"{ann.name}: Tag '{tag[NAME]}' not found in given project meta. Skippping file..."
                         sly.logger.warn(new_msg)
                         sly.fs.silent_remove(ann.path)
             if len(pcd_files) != len(os.listdir(ann_dir)):
