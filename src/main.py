@@ -17,11 +17,12 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
     uploaded_project_cnt = 0
     uploaded_pcd_cnt = 0
 
+    project_id = None
     if len(project_dirs) > 0:
         for project_dir in project_dirs:
-            project_id = None
             project_name = os.path.basename(os.path.normpath(project_dir))
             try:
+                f.check_project_structure(project_dir)
                 project_id, project_name = upload_pointcloud_project(
                     project_dir, api, g.WORKSPACE_ID, project_name, log_progress=True
                 )
@@ -32,8 +33,6 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
                 )
             except Exception as e:
                 try:
-                    if project_id is not None:
-                        api.project.remove(project_id)
                     app_logger.warn(
                         f"Project {project_dir} was not uploaded. Incorrect Supervisely format for pointcloud project.",
                         exc_info=True,
@@ -42,10 +41,6 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
                     pcd_dirs = [d for d in sly.fs.dirs_filter(project_dir, f.search_pcd_dir)]
                     pcd_cnt, project_id = f.upload_only_pcds(api, task_id, project_name, pcd_dirs)
                     uploaded_pcd_cnt += pcd_cnt
-                    if pcd_cnt == 0:
-                        app_logger.warn(f"No pointclouds found in {project_dir}.")
-                        if project_id is not None:
-                            api.project.remove(project_id)
                 except Exception as e:
                     app_logger.warn(f"Failed to upload data from {project_dir}. Error: {repr(e)}")
     elif len(pcd_dirs) > 0:
@@ -54,16 +49,11 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
         )
         pcd_cnt, project_id = f.upload_only_pcds(api, task_id, "Pointclouds project", pcd_dirs)
         uploaded_pcd_cnt += pcd_cnt
-        if pcd_cnt == 0:
-            app_logger.warn(f"Failed to upload data from {pcd_dirs}. No pointclouds found.")
-            if project_id is not None:
-                api.project.remove(project_id)
 
     if uploaded_project_cnt == 0 and uploaded_pcd_cnt == 0:
-        msg = "Failed to upload data. Not found any pointclouds or projects in Supervisely format."
-        description = "Please, check the input directory, task logs and try again."
-        app_logger.error(msg)
-        api.task.set_output_error(task_id, msg, description)
+        if project_id is not None:
+            api.project.remove(project_id)
+        raise Exception("Failed to upload data. Please, check ypur data, task logs and try again.")
 
     if g.REMOVE_SOURCE and not g.IS_ON_AGENT:
         if g.INPUT_DIR:

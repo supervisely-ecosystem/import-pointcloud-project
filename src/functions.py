@@ -5,10 +5,10 @@ import zipfile
 from os.path import basename, dirname, normpath
 from typing import Callable
 
-import globals as g
 import download_progress
+import globals as g
 import supervisely as sly
-from supervisely.io.fs import get_file_name_with_ext, silent_remove, get_file_ext
+from supervisely.pointcloud_annotation.constants import NAME, TAGS
 
 
 def update_progress(count, api: sly.Api, task_id: int, progress: sly.Progress) -> None:
@@ -49,13 +49,13 @@ def search_projects(dir_path):
 def search_pcd_dir(dir_path):
     listdir = os.listdir(dir_path)
     is_pcd_dir = any(
-        get_file_ext(f) in sly.pointcloud.ALLOWED_POINTCLOUD_EXTENSIONS for f in listdir
+        sly.fs.get_file_ext(f) in sly.pointcloud.ALLOWED_POINTCLOUD_EXTENSIONS for f in listdir
     )
     return is_pcd_dir
 
 
 def is_archive_path(path):
-    return get_file_ext(path) in [".zip", ".tar"] or path.endswith(".tar.gz")
+    return sly.fs.get_file_ext(path) in [".zip", ".tar"] or path.endswith(".tar.gz")
 
 
 def check_input_path(api, input_dir: str, input_file: str) -> str:
@@ -73,7 +73,7 @@ def check_input_path(api, input_dir: str, input_file: str) -> str:
             input_dir, input_file = None, listdir[0]
 
     if input_file:
-        file_ext = get_file_ext(input_file)
+        file_ext = sly.fs.get_file_ext(input_file)
         if not is_archive_path(input_file):
             sly.logger.info("File mode is selected, but uploaded file is not archive.")
             if basename(normpath(input_file)) in ["meta.json", "key_id_map.json"]:
@@ -194,9 +194,7 @@ def upload_only_pcds(api: sly.Api, task_id, project_name, only_pcd_dirs):
             f"Uploading pointclouds from directory '{pcd_dir}' to dataset '{dataset.name}'",
             total_size,
         )
-        pcd_names = [
-            os.path.basename(path) for path in pcd_paths if sly.pointcloud.has_valid_ext(path)
-        ]
+        pcd_names = [basename(path) for path in pcd_paths if sly.pointcloud.has_valid_ext(path)]
         pointclouds = api.pointcloud.upload_paths(
             dataset.id, pcd_names, pcd_paths, progress_project_cb
         )
@@ -209,3 +207,44 @@ def upload_only_pcds(api: sly.Api, task_id, project_name, only_pcd_dirs):
     if project is None:
         return pcd_cnt, None
     return pcd_cnt, project.id
+
+
+def check_project_structure(project_dir):
+    listdir = os.scandir(project_dir)
+    project_meta = None
+    for file in listdir:
+        if file.is_file() and file.name == "meta.json":
+            project_meta = sly.ProjectMeta.from_json(sly.json.load_json_file(file.path))
+            continue
+        if file.is_dir():
+            pcd_dir = os.path.join(file.path, "pointcloud")
+            ann_dir = os.path.join(file.path, "ann")
+            pcd_files = os.listdir(pcd_dir)
+            if not sly.fs.dir_exists(pcd_dir):
+                raise Exception(f"Pointcloud directory not found in {file.path}.")
+            if not sly.fs.dir_exists(ann_dir):
+                raise Exception(f"Annotation directory not found in {file.path}.")
+            for ann in os.scandir(ann_dir):
+                if ann.is_file():
+                    try:
+                        ann_json = sly.json.load_json_file(ann.path)
+                        sly.PointcloudAnnotation.from_json(ann_json, project_meta)
+                    except Exception as e:
+                        new_msg = f"{ann.name}: Annotation file is not valid: {e}."
+                        tag_names = [tagmeta.name for tagmeta in project_meta.tag_metas]
+                        if "TagMeta is None" in str(e):
+                            for tag in ann_json[TAGS]:
+                                if NAME not in tag:
+                                    new_msg = f"{ann.name}: Name field not found for one of the tags in uploaded annotation. Skippping file..."
+                                elif tag[NAME] not in tag_names:
+                                    new_msg = f"{ann.name}: Tag '{tag[NAME]}' not found in given project meta. Skippping file..."
+                        sly.logger.warn(new_msg)
+                        sly.fs.silent_remove(ann.path)
+            if len(pcd_files) != len(os.listdir(ann_dir)):
+                for pcd in pcd_files:
+                    if f"{pcd}.json" not in os.listdir(ann_dir):
+                        ann_path = os.path.join(ann_dir, f"{pcd}.json")
+                        sly.json.dump_json_file(sly.PointcloudAnnotation().to_json(), ann_path)
+                    if sly.fs.get_file_size(os.path.join(pcd_dir, pcd)) == 0:
+                        sly.logger.warn(f"Pointcloud {pcd} is empty. Skipping...")
+                        sly.fs.silent_remove(os.path.join(pcd_dir, pcd))
