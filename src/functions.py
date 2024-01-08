@@ -243,26 +243,21 @@ def check_project_structure(project_dir):
                         ann_json = sly.json.load_json_file(ann.path)
                         sly.PointcloudAnnotation.from_json(ann_json, project_meta)
                     except Exception as e:
-                        new_msg = f"Annotation file is not valid: {e}."
+                        new_msg = f"{ann.name}: Annotation file is not valid: {e}."
                         tag_names = [tagmeta.name for tagmeta in project_meta.tag_metas]
                         if "TagMeta is None" in str(e):
                             for tag in ann_json[TAGS]:
                                 if NAME not in tag:
-                                    new_msg = f"Name field not found for one of the tags in uploaded annotation."
+                                    new_msg = f"{ann.name}: Name field not found for one of the tags in uploaded annotation."
                                 elif tag[NAME] not in tag_names:
-                                    new_msg = f"Tag '{tag[NAME]}' not found in given project meta."
+                                    new_msg = f"{ann.name}: Tag '{tag[NAME]}' not found in given project meta."
                         sly.logger.warn(new_msg)
-                        sly.logger.info(f"Skipping annotation file {ann.name}...")
                         sly.fs.silent_remove(ann.path)
             if len(pcd_files) != len(os.listdir(ann_dir)):
-                missing_anns = []
                 for pcd in pcd_files:
                     if f"{pcd}.json" not in os.listdir(ann_dir):
                         ann_path = os.path.join(ann_dir, f"{pcd}.json")
                         sly.json.dump_json_file(sly.PointcloudAnnotation().to_json(), ann_path)
-                        missing_anns.append(ann_path)
                     if sly.fs.get_file_size(os.path.join(pcd_dir, pcd)) == 0:
                         sly.logger.warn(f"Pointcloud {pcd} is empty. Skipping...")
                         sly.fs.silent_remove(os.path.join(pcd_dir, pcd))
-                if len(missing_anns) > 0:
-                    sly.logger.info(f"Not found annotations for {len(missing_anns)} pointclouds.")
