@@ -204,20 +204,19 @@ def upload_only_pcds(api: sly.Api, task_id, project_name, only_pcd_dirs):
 
 
 def check_project_structure(project_dir):
-    listdir = os.scandir(project_dir)
-    project_meta = None
-    for file in listdir:
-        if file.is_file() and file.name == "meta.json":
-            project_meta = sly.ProjectMeta.from_json(sly.json.load_json_file(file.path))
-            continue
-        if file.is_dir():
-            pcd_dir = os.path.join(file.path, "pointcloud")
-            ann_dir = os.path.join(file.path, "ann")
+    scandir = os.scandir(project_dir)
+    meta_path = os.path.join(project_dir, "meta.json")
+    meta_json = sly.json.load_json_file(meta_path)
+    project_meta = sly.ProjectMeta.from_json(meta_json)
+    for path in scandir:
+        if path.is_dir():
+            pcd_dir = os.path.join(path.path, "pointcloud")
+            ann_dir = os.path.join(path.path, "ann")
             pcd_files = os.listdir(pcd_dir)
             if not sly.fs.dir_exists(pcd_dir):
-                raise Exception(f"Pointcloud directory not found in {file.path}.")
+                raise Exception(f"Pointcloud directory not found in {path.path}.")
             if not sly.fs.dir_exists(ann_dir):
-                raise Exception(f"Annotation directory not found in {file.path}.")
+                raise Exception(f"Annotation directory not found in {path.path}.")
             for ann in os.scandir(ann_dir):
                 if ann.is_file():
                     try:
