@@ -5,10 +5,21 @@ import zipfile
 from os.path import basename, dirname, normpath
 from typing import Callable
 
-import globals as g
 import download_progress
+import globals as g
 import supervisely as sly
-from supervisely.io.fs import get_file_name_with_ext, silent_remove, get_file_ext
+from supervisely.annotation.label import LabelJsonFields
+from supervisely.annotation.obj_class import ObjClassJsonFields
+from supervisely.api.module_api import ApiField
+from supervisely.io.fs import get_file_ext, get_file_name_with_ext, silent_remove
+from supervisely.pointcloud_annotation.constants import (
+    FIGURES,
+    NAME,
+    OBJECT_ID,
+    OBJECT_KEY,
+    OBJECTS,
+    TAGS,
+)
 
 
 def update_progress(count, api: sly.Api, task_id: int, progress: sly.Progress) -> None:
@@ -209,3 +220,66 @@ def upload_only_pcds(api: sly.Api, task_id, project_name, only_pcd_dirs):
     if project is None:
         return pcd_cnt, None
     return pcd_cnt, project.id
+
+
+def check_project_structure(project_dir):
+    project_fs = sly.PointcloudProject.read_single(project_dir)
+    for dataset_fs in project_fs:
+        dataset_fs: sly.PointcloudDataset
+        for item_name in dataset_fs:
+            item_path, related_images_dir, ann_path = dataset_fs.get_item_paths(item_name)
+            related_items = dataset_fs.get_related_images(item_name)
+
+            # check if item_path exists
+            if not sly.fs.file_exists(item_path):
+                raise FileNotFoundError(f"Pointcloud {item_path} not found.")
+
+            # check if ann_path exists
+            if not sly.fs.file_exists(ann_path):
+                sly.logger.warn(f"Annotation {ann_path} not found.")
+                sly.json.dump_json_file(sly.PointcloudAnnotation().to_json(), ann_path)
+
+            # validate_item_annotation
+            ann_json = sly.json.load_json_file(ann_path)
+            try:
+                sly.PointcloudAnnotation.from_json(ann_json, project_fs.meta)
+            except Exception as e:
+                sly.logger.warn(f"Annotation {ann_path} is not valid.")
+                tag_names = [tagmeta.name for tagmeta in project_fs.meta.tag_metas]
+
+                new_msg = None
+                if "TagMeta is None" in str(e):
+                    for tag in ann_json[TAGS]:
+                        if NAME not in tag:
+                            new_msg = f"Tag name field not found in the one of the tags in uploaded annotation."
+                        if tag[NAME] not in tag_names:
+                            new_msg = f"Tag '{tag[NAME]}' not found in uploaded project meta."
+                if new_msg is not None:
+                    raise e.__class__(new_msg)
+
+                # obj_class_names = [objclass.name for objclass in project_fs.meta.obj_classes]
+                # for obj in ann_json[OBJECTS]:
+                #     if LabelJsonFields.OBJ_CLASS_NAME not in obj:
+                #         new_msg = f"classTitle field not found in the one of the objects in uploaded annotation."
+                #     if TAGS not in obj:
+                #         new_msg = f"tags field not found in the one of the objects in uploaded annotation."
+                #     obj_name = obj[LabelJsonFields.OBJ_CLASS_NAME]
+                #     if obj_name not in obj_class_names:
+                #         new_msg = f"Object class '{obj_name}' not found in uploaded project meta."
+                # for fig in ann_json[FIGURES]:
+                #     obj_key = fig.get(OBJECT_KEY, None)
+                #     obj_id = fig.get(OBJECT_ID, None)
+                #     if obj_key is None and obj_id is None:
+                #         new_msg = f"Object key or id not found in the one of the figures in uploaded annotation."
+
+            # check related_images if exist
+            if sly.fs.dir_exists(related_images_dir) and len(related_items) != 0:
+                for img_path, meta_json in related_items:
+                    # check if image exists
+                    if not sly.fs.file_exists(img_path):
+                        raise FileNotFoundError(f"File {img_path} not found.")
+
+                    # check that meta_json contains "name" and "meta" fields
+                    for field in ["name", "meta"]:
+                        if field not in meta_json:
+                            raise KeyError(f"Field '{field}' not found in related image meta.")

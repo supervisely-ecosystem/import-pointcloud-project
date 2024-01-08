@@ -22,6 +22,7 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
             project_id = None
             project_name = os.path.basename(os.path.normpath(project_dir))
             try:
+                f.check_project_structure(project_dir)
                 project_id, project_name = upload_pointcloud_project(
                     project_dir, api, g.WORKSPACE_ID, project_name, log_progress=True
                 )
