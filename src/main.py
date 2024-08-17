@@ -2,6 +2,7 @@ import os
 
 import functions as f
 import globals as g
+import workflow as w
 import supervisely as sly
 from supervisely.project.pointcloud_project import upload_pointcloud_project
 
@@ -34,32 +35,36 @@ def import_pointcloud_project(api: sly.Api, task_id, context, state, app_logger)
                 app_logger.info(
                     f"Project {project_name} (ID:{project_id}) was successfully uploaded."
                 )
+                w.workflow_output(api, project_id)
             except Exception as e:
                 try:
                     app_logger.warn(
                         f"Project {project_dir} was not uploaded. Incorrect Supervisely format for pointcloud project.",
                         exc_info=True,
                     )
-                    app_logger.info("Try to upload only pointclouds...")
+                    app_logger.info("Trying to upload only pointclouds...")
                     pcd_dirs = [d for d in sly.fs.dirs_filter(project_dir, f.search_pcd_dir)]
                     pcd_cnt, project_id = f.upload_only_pcds(api, task_id, project_name, pcd_dirs)
                     uploaded_pcd_cnt += pcd_cnt
+                    if pcd_cnt > 0 and project_id is not None:
+                        w.workflow_output(api, project_id)
                 except Exception as e:
                     app_logger.warn(f"Failed to upload data from {project_dir}. Error: {repr(e)}")
     elif len(pcd_dirs) > 0:
         app_logger.warn(
-            "Not found pointcloud projects in Supervisely format. Try to upload only pointclouds..."
+            "Not found pointcloud projects in Supervisely format. Trying to upload only pointclouds..."
         )
         project_name = (
             "Pointclouds project" if g.OUTPUT_PROJECT_NAME == "" else g.OUTPUT_PROJECT_NAME
         )
         pcd_cnt, project_id = f.upload_only_pcds(api, task_id, project_name, pcd_dirs)
         uploaded_pcd_cnt += pcd_cnt
-
+        if pcd_cnt > 0 and project_id is not None:
+            w.workflow_output(api, project_id)
     if uploaded_project_cnt == 0 and uploaded_pcd_cnt == 0:
         if project_id is not None:
             api.project.remove(project_id)
-        raise Exception("Failed to upload data. Please, check ypur data, task logs and try again.")
+        raise Exception("Failed to upload data. Please, check your data, task logs and try again.")
 
     if g.REMOVE_SOURCE and not g.IS_ON_AGENT:
         if g.INPUT_DIR:
