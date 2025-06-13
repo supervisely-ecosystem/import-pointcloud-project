@@ -7,7 +7,7 @@
     "project_name": ""
   },
   "description": "Import Point Cloud Project with Annotations and Photo context in Supervisely format",
-  "docker_image": "supervisely/import-export:6.73.158",
+  "docker_image": "supervisely/import-export:6.73.379",
   "task_location": "workspace_tasks",
   "modal_template": "src/modal.html",
   "main_script": "src/main.py",
