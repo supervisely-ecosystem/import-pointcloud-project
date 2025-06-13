@@ -17,7 +17,7 @@
   "headless": true,
   "isolate": true,
   "min_agent_version": "6.7.4",
-  "min_instance_version": "6.10.0",
+  "min_instance_version": "6.13.00",
   "context_menu": {
     "context_category": "Import",
     "target": ["files_folder", "files_file", "agent_folder", "agent_file"]
