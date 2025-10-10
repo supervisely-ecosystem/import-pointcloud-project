@@ -10,7 +10,7 @@
   <a href="#Demo-Projects">Demo Projects</a>
 </p>
 
-[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](https://ecosystem.supervisely.com/apps/import-pointcloud-project)
+[![](https://img.shields.io/badge/supervisely-ecosystem-brightgreen)](../../../../supervisely-ecosystem/import-pointcloud-project)
 [![](https://img.shields.io/badge/slack-chat-green.svg?logo=slack)](https://supervisely.com/slack)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/supervisely-ecosystem/import-pointcloud-project)
 [![views](https://app.supervisely.com/img/badges/views/supervisely-ecosystem/import-pointcloud-project.png)](https://supervisely.com)
@@ -22,7 +22,7 @@
 
 Import project in Supervisely Point Cloud format from folder or archive.
 
-Backward compatible with [`Export Point Clouds project in Supervisely format`](https://ecosystem.supervisely.com/apps/export-pointclouds-project-in-supervisely-format) app
+Backward compatible with [`Export Point Clouds project in Supervisely format`](../../../../supervisely-ecosystem/export-pointclouds-project-in-supervisely-format) app
 
 <img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/export-pointclouds-project-in-supervisely-format" src="https://user-images.githubusercontent.com/97401023/193619296-df4ea2b2-e26c-42c2-b98a-bbe578c67fdb.png" width="450px" style='padding-bottom: 20px'/>
 
@@ -87,7 +87,7 @@ The imported project structure has to be the following:
 
 # How To Use
 
-1. Run app [Import Point Cloud Project](https://ecosystem.supervisely.com/apps/import-pointcloud-project) from the ecosystem or the context menu of the directory or archive in **Team Files** -> `Run app` -> `Import Point Cloud project`
+1. Run app [Import Point Cloud Project](../../../../supervisely-ecosystem/import-pointcloud-project) from the ecosystem or the context menu of the directory or archive in **Team Files** -> `Run app` -> `Import Point Cloud project`
 
 <img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/import-pointcloud-project" src="https://user-images.githubusercontent.com/97401023/193620195-6481801e-0fc5-4ac3-858f-cb3a294defac.png" width="400px" style='padding-bottom: 10px'/>
 
@@ -95,7 +95,7 @@ The imported project structure has to be the following:
 
 # Demo Projects
 
-You can export these projects from the ecosystem with [Export Point Clouds project in Supervisely format](https://ecosystem.supervisely.com/apps/export-pointclouds-project-in-supervisely-format) app to see examples of the project structure.
+You can export these projects from the ecosystem with [Export Point Clouds project in Supervisely format](../../../../supervisely-ecosystem/export-pointclouds-project-in-supervisely-format) app to see examples of the project structure.
 
 - [Demo Point Cloud project](https://ecosystem.supervisely.com/projects/demo-pointcloud-project)
 
