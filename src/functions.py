@@ -187,6 +187,7 @@ def upload_only_pcds(api: sly.Api, task_id, project_name, only_pcd_dirs):
             task_id,
             f"Uploading pointclouds from directory '{pcd_dir}' to dataset '{dataset.name}'",
             total_size,
+            is_size=True,
         )
         pcd_names = [basename(path) for path in pcd_paths if sly.pointcloud.has_valid_ext(path)]
         pointclouds = api.pointcloud.upload_paths(
@@ -212,11 +213,18 @@ def check_project_structure(project_dir):
         if path.is_dir():
             pcd_dir = os.path.join(path.path, "pointcloud")
             ann_dir = os.path.join(path.path, "ann")
-            pcd_files = os.listdir(pcd_dir)
             if not sly.fs.dir_exists(pcd_dir):
                 raise Exception(f"Pointcloud directory not found in {path.path}.")
             if not sly.fs.dir_exists(ann_dir):
                 raise Exception(f"Annotation directory not found in {path.path}.")
+            pcd_files = [
+                f
+                for f in os.listdir(pcd_dir)
+                if sly.pointcloud.has_valid_ext(f)
+            ]
+            if len(pcd_files) == 0:
+                sly.logger.warn(f"No valid pointcloud files found in {pcd_dir}. Skipping dataset.")
+                continue
             for ann in os.scandir(ann_dir):
                 if ann.is_file():
                     try:

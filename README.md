@@ -22,6 +22,8 @@
 
 Import project in Supervisely Point Cloud format from folder or archive.
 
+Supported point cloud file formats: **`.pcd`**, **`.ply`**, **`.las`**, **`.laz`**.
+
 Backward compatible with [`Export Point Clouds project in Supervisely format`](https://ecosystem.supervisely.com/apps/export-pointclouds-project-in-supervisely-format) app
 
 <img data-key="sly-module-link" data-module-slug="supervisely-ecosystem/export-pointclouds-project-in-supervisely-format" src="https://user-images.githubusercontent.com/97401023/193619296-df4ea2b2-e26c-42c2-b98a-bbe578c67fdb.png" width="450px" style='padding-bottom: 20px'/>
@@ -35,8 +37,10 @@ Backward compatible with [`Export Point Clouds project in Supervisely format`](h
 
 # Preparation
 
-Upload your data in Supervisely Point Cloud Episodes format to Team Files. It is possible to upload a folder or archive (`.tar`, `.tar.gz` or `.zip`).<br>
+Upload your data in Supervisely Point Cloud format to Team Files. It is possible to upload a folder or archive (`.tar`, `.tar.gz` or `.zip`).<br>
 ℹ️ You can download the archive with data example [here](https://github.com/supervisely-ecosystem/import-pointcloud-project/files/12547913/my_pointcloud_project.zip).<br>
+
+Point cloud files can be in any of the supported formats: `.pcd`, `.ply`, `.las`, `.laz`.
 
 The imported project structure has to be the following:
 
@@ -46,7 +50,7 @@ The imported project structure has to be the following:
 ├──📜meta.json
 ├──📂dataset1
 │ ├──📂pointcloud
-│ │ ├──📜scene_1.pcd
+│ │ ├──📜scene_1.pcd  (or .ply / .las / .laz)
 │ │ ├──📜scene_2.pcd
 │ │ └──📜...
 │ ├──📂related_images
@@ -69,7 +73,7 @@ The imported project structure has to be the following:
 │     └──📜...
 ├──📂dataset2
 │ ├──📂pointcloud
-│ │ ├──📜scene_1.pcd
+│ │ ├──📜scene_1.pcd  (or .ply / .las / .laz)
 │ │ └──📜...
 │ ├──📂related_images
 │ │   ├──📂scene_1_pcd
@@ -84,6 +88,8 @@ The imported project structure has to be the following:
 │     └──📜...
 └──📂dataset...
 ```
+
+If the uploaded folder does not contain a valid Supervisely project structure (no `meta.json`), the app will fall back to uploading raw point cloud files (`.pcd`, `.ply`, `.las`, `.laz`) directly as a new project without annotations.
 
 # How To Use
 
